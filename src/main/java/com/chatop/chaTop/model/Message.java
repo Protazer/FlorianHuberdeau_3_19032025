@@ -2,28 +2,40 @@ package com.chatop.chaTop.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
 @Data
 @Entity
-@Table(name="messages")
+@Table(name = "messages")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(name="rental_id")
-    private Long rentalId;
+    @Column(name = "rental_id")
+    private int rentalId;
 
-    @Column(name="user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
+
+    @Column(name = "user_id")
+    private int userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String message;
 
-    @Column(name="created_at")
+    @CreationTimestamp
+    @Column(name = "created_at")
     private Date createdAt;
 
-    @Column(name="updated_at")
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private Date updatedAt;
 }
