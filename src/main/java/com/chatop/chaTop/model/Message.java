@@ -19,14 +19,14 @@ public class Message {
     private int rentalId;
 
     @ManyToOne
-    @JoinColumn(name = "rental_id")
+    @JoinColumn(name = "rental_id", insertable = false, updatable = false)
     private Rental rental;
 
     @Column(name = "user_id")
     private int userId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     private String message;

@@ -3,7 +3,6 @@ package com.chatop.chaTop.service;
 import com.chatop.chaTop.model.Rental;
 import com.chatop.chaTop.repository.RentalRepository;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,11 +12,14 @@ import java.util.Optional;
 @Service
 public class RentalService {
 
-    @Autowired
-    private RentalRepository rentalRepository;
 
+    private final RentalRepository rentalRepository;
 
-    public Optional<Rental> getRentalById(final Long id) {
+    public RentalService(final RentalRepository rentalRepository) {
+        this.rentalRepository = rentalRepository;
+    }
+
+    public Optional<Rental> getRentalById(final int id) {
         return rentalRepository.findById(id);
     }
 
