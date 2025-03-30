@@ -2,6 +2,6 @@ package com.chatop.chaTop.dto;
 
 import java.util.Date;
 
-public record RentalDto(Long id, String name, Float surface, Float price, String picture, String description,
-                        Long ownerId, Date createdAt, Date updatedAt) {
+public record RentalDto(int id, String name, float surface, float price, String picture, String description,
+                        int ownerId, Date createdAt, Date updatedAt) {
 }
