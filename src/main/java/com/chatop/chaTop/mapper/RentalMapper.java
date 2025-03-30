@@ -18,12 +18,12 @@ public class RentalMapper {
         return new GetRentalResponse(rental.getId(), rental.getName(), rental.getSurface(), rental.getPrice(), rental.getPicture(), rental.getDescription(), rental.getOwnerId(), rental.getCreatedAt(), rental.getUpdatedAt());
     }
 
-    public Rental toEntity(CreateRental rental, int ownerId) {
+    public Rental toEntity(CreateRental rental) {
         Rental NewRental = new Rental();
         NewRental.setName(rental.name());
         NewRental.setPicture(rental.picture());
         NewRental.setSurface(rental.surface());
-        NewRental.setOwnerId(ownerId);
+        NewRental.setOwnerId(rental.ownerId());
         NewRental.setDescription(rental.description());
         NewRental.setPrice(rental.price());
 
