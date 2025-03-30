@@ -1,10 +1,15 @@
 package com.chatop.chaTop.service;
 
+import com.chatop.chaTop.mapper.RentalMapper;
 import com.chatop.chaTop.model.Rental;
+import com.chatop.chaTop.payload.response.GetAllRentalsResponse;
+import com.chatop.chaTop.payload.response.GetRentalResponse;
 import com.chatop.chaTop.repository.RentalRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -13,22 +18,32 @@ import java.util.Optional;
 public class RentalService {
 
 
-    private final RentalRepository rentalRepository;
+    private RentalRepository rentalRepository;
+    private RentalMapper rentalMapper;
 
-    public RentalService(final RentalRepository rentalRepository) {
+    public RentalService(final RentalRepository rentalRepository, final RentalMapper rentalMapper) {
         this.rentalRepository = rentalRepository;
+        this.rentalMapper = rentalMapper;
     }
 
-    public Optional<Rental> getRentalById(final int id) {
-        return rentalRepository.findById(id);
+    public GetRentalResponse getRentalById(final int id) {
+        Optional<Rental> rental = rentalRepository.findById(id);
+        if (rental.isPresent()) {
+            return rentalMapper.toDtoRental(rental.get());
+        }
+        throw new RuntimeException();
     }
 
-    public Iterable<Rental> getRentals() {
-        return rentalRepository.findAll();
-    }
+    public GetAllRentalsResponse getRentals() {
+        Iterable<Rental> rentals = rentalRepository.findAll();
 
-    public Rental saveRental(Rental rental) {
-        return rentalRepository.save(rental);
-    }
+        List<GetRentalResponse> formattedRentals = new ArrayList<>();
 
+        rentals.iterator().forEachRemaining((Rental rental) -> {
+            GetRentalResponse formattedRental = rentalMapper.toDtoRental(rental);
+            formattedRentals.add(formattedRental);
+        });
+
+        return rentalMapper.toDtoRentalList(formattedRentals);
+    }
 }

@@ -30,7 +30,7 @@ public class Rental {
     private int ownerId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     private User user;
 
     @CreationTimestamp
