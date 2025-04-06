@@ -1,4 +1,6 @@
 package com.chatop.chaTop.payload.request;
 
-public record PostMessage(String message, int user_id, int rental_id) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record PostMessage(@NotEmpty String message, @NotEmpty int user_id, @NotEmpty int rental_id) {
 }

@@ -5,27 +5,27 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    private String email;
+	private String email;
 
-    private String name;
+	private String name;
 
-    private String password;
+	private String password;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
+	@CreationTimestamp
+	@Column(name = "created_at")
+	private LocalDate createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private LocalDate updatedAt;
 }

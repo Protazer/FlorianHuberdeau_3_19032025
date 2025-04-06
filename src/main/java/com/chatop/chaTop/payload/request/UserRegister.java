@@ -1,5 +1,8 @@
 package com.chatop.chaTop.payload.request;
 
 
-public record UserRegister(String email, String name, String password) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
+public record UserRegister(@NotEmpty @Email String email, @NotEmpty String name, @NotEmpty String password) {
 }

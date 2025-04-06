@@ -1,7 +1,6 @@
 package com.chatop.chaTop.mapper;
 
 import com.chatop.chaTop.model.Rental;
-import com.chatop.chaTop.payload.request.CreateRental;
 import com.chatop.chaTop.payload.response.GetAllRentalsResponse;
 import com.chatop.chaTop.payload.response.GetRentalResponse;
 import org.springframework.stereotype.Service;
@@ -14,20 +13,9 @@ public class RentalMapper {
         return new GetAllRentalsResponse(rentals);
     }
 
-    public GetRentalResponse toDtoRental(Rental rental) {
-        return new GetRentalResponse(rental.getId(), rental.getName(), rental.getSurface(), rental.getPrice(), rental.getPicture(), rental.getDescription(), rental.getOwnerId(), rental.getCreatedAt(), rental.getUpdatedAt());
+    public GetRentalResponse toDtoRental(Rental rental, String createdAt, String updatedAt) {
+        return new GetRentalResponse(rental.getId(), rental.getName(), rental.getSurface(), rental.getPrice(), rental.getPicture(), rental.getDescription(), rental.getOwnerId(), createdAt, updatedAt);
     }
 
-    public Rental toEntity(CreateRental rental) {
-        Rental NewRental = new Rental();
-        NewRental.setName(rental.name());
-        NewRental.setPicture(rental.picture());
-        NewRental.setSurface(rental.surface());
-        NewRental.setOwnerId(rental.ownerId());
-        NewRental.setDescription(rental.description());
-        NewRental.setPrice(rental.price());
-
-        return NewRental;
-    }
 
 }

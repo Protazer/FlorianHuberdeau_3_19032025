@@ -5,37 +5,29 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "messages")
 public class Message {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(name = "rental_id")
-    private int rentalId;
+	@Column(name = "rental_id")
+	private int rentalId;
 
-    @ManyToOne
-    @JoinColumn(name = "rental_id", insertable = false, updatable = false)
-    private Rental rental;
+	@Column(name = "user_id")
+	private int userId;
+	
+	private String message;
 
-    @Column(name = "user_id")
-    private int userId;
+	@CreationTimestamp
+	@Column(name = "created_at")
+	private LocalDate createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
-
-    private String message;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private LocalDate updatedAt;
 }

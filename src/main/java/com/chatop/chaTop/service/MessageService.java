@@ -21,8 +21,8 @@ public class MessageService {
     }
 
     public PostMessageResponse postMessage(PostMessage message) {
-        Message newMessage = messageMapper.toEntity(message);
-        messageRepository.save(newMessage);
+        Message newMessage = this.messageMapper.toEntity(message);
+        this.messageRepository.save(newMessage);
         return new PostMessageResponse("Message send with success");
     }
 }

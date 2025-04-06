@@ -1,6 +1,5 @@
 package com.chatop.chaTop.controller;
 
-import com.chatop.chaTop.payload.request.CreateRental;
 import com.chatop.chaTop.payload.response.CreateRentalResponse;
 import com.chatop.chaTop.payload.response.GetAllRentalsResponse;
 import com.chatop.chaTop.payload.response.GetRentalResponse;
@@ -40,10 +39,20 @@ public class RentalController {
         }
     }
 
-    @PostMapping(value = "", consumes = {"multipart/form-data"})
-    public ResponseEntity<CreateRentalResponse> addRental(@RequestBody CreateRental request, @RequestPart MultipartFile picture) {
+    @PostMapping
+    public ResponseEntity<CreateRentalResponse> addRental(@RequestPart(value = "picture") MultipartFile picture, @RequestParam("name") String name, @RequestParam("surface") int surface, @RequestParam("price") int price, @RequestParam("description") String description) {
         try {
-            CreateRentalResponse createRentalResponse = rentalService.addRental(request, picture);
+            CreateRentalResponse createRentalResponse = rentalService.addRental(picture, name, surface, price, description);
+            return ResponseEntity.ok().body(createRentalResponse);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CreateRentalResponse> updateRental(@PathVariable int id, @RequestParam("name") String name, @RequestParam("surface") int surface, @RequestParam("price") int price, @RequestParam("description") String description) {
+        try {
+            CreateRentalResponse createRentalResponse = rentalService.updateRental(id, name, surface, price, description);
             return ResponseEntity.ok().body(createRentalResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -18,9 +18,9 @@ public class Rental {
 
     private String name;
 
-    private float surface;
+    private int surface;
 
-    private float price;
+    private int price;
 
     private String picture;
 
@@ -29,15 +29,12 @@ public class Rental {
     @Column(name = "owner_id")
     private int ownerId;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
-    private User user;
-
     @CreationTimestamp
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDate updatedAt;
+
 }
