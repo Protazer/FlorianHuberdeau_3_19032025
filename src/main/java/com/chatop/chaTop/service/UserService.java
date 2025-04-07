@@ -11,42 +11,46 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.chatop.chaTop.utils.Helpers.formatDate;
+
 @Data
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
-    public UserService(final UserRepository userRepository, final UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
+	public UserService(final UserRepository userRepository, final UserMapper userMapper) {
+		this.userRepository = userRepository;
+		this.userMapper = userMapper;
+	}
 
-    public void registerUser(UserRegister user) {
-        try {
-            User newUser = this.userMapper.UserRegisterToEntity(user);
-            this.userRepository.save(newUser);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public void registerUser(UserRegister user) {
+		try {
+			User newUser = this.userMapper.UserRegisterToEntity(user);
+			this.userRepository.save(newUser);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public void loginUser(UserLogin user) {
-        try {
-            System.out.println(user);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public void loginUser(UserLogin user) {
+		try {
+			System.out.println(user);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public GetUser getUser(String email) {
-        Optional<User> user = this.userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            return this.userMapper.toDto(user.get());
-        } else {
-            throw new RuntimeException();
-        }
+	public GetUser getUser(String email) {
+		Optional<User> user = this.userRepository.findByEmail(email);
+		if (user.isPresent()) {
+			String updatedDate = formatDate(user.get().getUpdatedAt());
+			String createdAt = formatDate(user.get().getCreatedAt());
+			return this.userMapper.toDto(user.get(), createdAt, updatedDate);
+		} else {
+			throw new RuntimeException();
+		}
 
-    }
+	}
 }

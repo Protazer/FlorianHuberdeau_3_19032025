@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper {
-    public GetUser toDto(User user) {
-        return new GetUser(user.getId(), user.getEmail(), user.getName(), user.getCreatedAt(), user.getUpdatedAt());
-    }
+	public GetUser toDto(User user, String createdAt, String updatedDate) {
+		return new GetUser(user.getId(), user.getEmail(), user.getName(), createdAt, updatedDate);
+	}
 
-    public User UserRegisterToEntity(UserRegister user) {
-        User newUser = new User();
-        newUser.setName(user.name());
-        newUser.setEmail(user.email());
-        newUser.setPassword(user.password());
-        return newUser;
-    }
+	public User UserRegisterToEntity(UserRegister user) {
+		User newUser = new User();
+		newUser.setName(user.name());
+		newUser.setEmail(user.email());
+		newUser.setPassword(user.password());
+		return newUser;
+	}
 }

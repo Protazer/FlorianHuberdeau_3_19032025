@@ -1,6 +1,4 @@
 package com.chatop.chaTop.payload.response;
 
-import java.time.LocalDate;
-
-public record GetUser(int id, String name, String email, LocalDate created_at, LocalDate updated_at) {
+public record GetUser(int id, String name, String email, String created_at, String updated_at) {
 }

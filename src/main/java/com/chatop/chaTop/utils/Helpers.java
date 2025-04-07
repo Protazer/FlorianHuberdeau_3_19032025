@@ -1,16 +1,12 @@
 package com.chatop.chaTop.utils;
 
 
-import org.springframework.context.annotation.Bean;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Helpers {
-
-    @Bean
-    public String formatDate(LocalDate date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        return formatter.format(date);
-    }
+	public static String formatDate(Date date) {
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
+		return formater.format(date);
+	}
 }

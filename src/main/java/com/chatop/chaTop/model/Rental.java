@@ -5,36 +5,36 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "rentals")
 public class Rental {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    private String name;
+	private String name;
 
-    private int surface;
+	private int surface;
 
-    private int price;
+	private int price;
 
-    private String picture;
+	private String picture;
 
-    private String description;
+	private String description;
 
-    @Column(name = "owner_id")
-    private int ownerId;
+	@Column(name = "owner_id")
+	private int ownerId;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDate createdAt;
+	@CreationTimestamp
+	@Column(name = "created_at")
+	private Date createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private Date updatedAt;
 
 }
