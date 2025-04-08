@@ -4,5 +4,7 @@ package com.chatop.chaTop.payload.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public record UserLogin(@NotEmpty @Email String login, @NotEmpty String password) {
+public record UserLogin(
+		@NotEmpty(message = "Login is mandatory") @Email(message = "Email must be a valid address") String login,
+		@NotEmpty(message = "Password is mandatory ") String password) {
 }

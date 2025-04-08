@@ -1,6 +1,7 @@
 package com.chatop.chaTop.mapper;
 
 import com.chatop.chaTop.model.Rental;
+import com.chatop.chaTop.payload.request.PostRental;
 import com.chatop.chaTop.payload.response.GetAllRentalsResponse;
 import com.chatop.chaTop.payload.response.GetRentalResponse;
 import org.springframework.stereotype.Service;
@@ -19,24 +20,24 @@ public class RentalMapper {
 	}
 
 
-	public Rental toCreateEntity(final String name, final int surface, final int price, final String description, final String picture, final int ownerId) {
+	public Rental toCreateEntity(final PostRental request, final String picture, final int ownerId) {
 		Rental newRental = new Rental();
-		newRental.setName(name);
-		newRental.setSurface(surface);
-		newRental.setPrice(price);
-		newRental.setDescription(description);
+		newRental.setName(request.name());
+		newRental.setSurface(request.surface());
+		newRental.setPrice(request.price());
+		newRental.setDescription(request.description());
 		newRental.setPicture(picture);
 		newRental.setOwnerId(ownerId);
 		return newRental;
 	}
 
-	public Rental toUpdateEntity(final int id, final String name, final int surface, final int price, final String description, final String picture, final int ownerId, Date createdAt, Date updatedAt) {
+	public Rental toUpdateEntity(final PostRental request, final int rentalId, final String picture, final int ownerId, Date createdAt, Date updatedAt) {
 		Rental newRental = new Rental();
-		newRental.setId(id);
-		newRental.setName(name);
-		newRental.setSurface(surface);
-		newRental.setPrice(price);
-		newRental.setDescription(description);
+		newRental.setId(rentalId);
+		newRental.setName(request.name());
+		newRental.setSurface(request.surface());
+		newRental.setPrice(request.price());
+		newRental.setDescription(request.description());
 		newRental.setPicture(picture);
 		newRental.setOwnerId(ownerId);
 		newRental.setCreatedAt(createdAt);

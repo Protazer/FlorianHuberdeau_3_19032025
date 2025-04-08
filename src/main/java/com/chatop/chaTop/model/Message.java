@@ -13,13 +13,13 @@ import java.util.Date;
 public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(name = "rental_id")
-	private int rentalId;
+	private Integer rentalId;
 
 	@Column(name = "user_id")
-	private int userId;
+	private Integer userId;
 
 	private String message;
 

@@ -2,6 +2,7 @@ package com.chatop.chaTop.service;
 
 import com.chatop.chaTop.mapper.RentalMapper;
 import com.chatop.chaTop.model.Rental;
+import com.chatop.chaTop.payload.request.PostRental;
 import com.chatop.chaTop.payload.response.CreateRentalResponse;
 import com.chatop.chaTop.payload.response.GetAllRentalsResponse;
 import com.chatop.chaTop.payload.response.GetRentalResponse;
@@ -42,7 +43,7 @@ public class RentalService {
 			String updatedDate = formatDate(rental.get().getUpdatedAt());
 			String createdAt = formatDate(rental.get().getCreatedAt());
 
-			return this.rentalMapper.toDtoRental(rental.get(), createdAt, updatedDate);
+			return rentalMapper.toDtoRental(rental.get(), createdAt, updatedDate);
 		}
 		throw new RuntimeException();
 	}
@@ -62,7 +63,7 @@ public class RentalService {
 		return rentalMapper.toDtoRentalList(formattedRentals);
 	}
 
-	public CreateRentalResponse addRental(MultipartFile picture, String name, int surface, int price, String description) {
+	public CreateRentalResponse addRental(MultipartFile picture, PostRental request) {
 		try {
 			int ownerId = 3;
 
@@ -72,7 +73,7 @@ public class RentalService {
 					"overwrite", true
 			)).get("url").toString();
 
-			Rental newRental = rentalMapper.toCreateEntity(name, surface, price, description, pictureUrl, ownerId);
+			Rental newRental = rentalMapper.toCreateEntity(request, pictureUrl, ownerId);
 			rentalRepository.save(newRental);
 			return new CreateRentalResponse("Rental created !");
 
@@ -82,7 +83,7 @@ public class RentalService {
 
 	}
 
-	public CreateRentalResponse updateRental(final int id, String name, int surface, int price, String description) {
+	public CreateRentalResponse updateRental(int id, PostRental request) {
 		int ownerId = 3;
 		Optional<Rental> oldRental = rentalRepository.findById(id);
 
@@ -90,7 +91,7 @@ public class RentalService {
 			Rental oldRentalValues = oldRental.get();
 			Date updatedDate = new Date();
 
-			Rental updatedRental = rentalMapper.toUpdateEntity(oldRentalValues.getId(), name, surface, price, description, oldRentalValues.getPicture(), ownerId, oldRentalValues.getCreatedAt(), updatedDate);
+			Rental updatedRental = rentalMapper.toUpdateEntity(request, oldRentalValues.getId(), oldRentalValues.getPicture(), ownerId, oldRentalValues.getCreatedAt(), updatedDate);
 			rentalRepository.save(updatedRental);
 			return new CreateRentalResponse("Rental updated !");
 		} else {
