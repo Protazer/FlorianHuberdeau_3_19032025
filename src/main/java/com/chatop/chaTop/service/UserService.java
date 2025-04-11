@@ -2,9 +2,9 @@ package com.chatop.chaTop.service;
 
 import com.chatop.chaTop.mapper.UserMapper;
 import com.chatop.chaTop.model.User;
-import com.chatop.chaTop.payload.request.UserLogin;
-import com.chatop.chaTop.payload.request.UserRegister;
-import com.chatop.chaTop.payload.response.GetUser;
+import com.chatop.chaTop.payload.request.UserLoginRequestDto;
+import com.chatop.chaTop.payload.request.UserRegisterRequestDto;
+import com.chatop.chaTop.payload.response.GetUserResponseDto;
 import com.chatop.chaTop.repository.UserRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -25,16 +25,13 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 
-	public void registerUser(UserRegister user) {
-		try {
-			User newUser = this.userMapper.UserRegisterToEntity(user);
-			this.userRepository.save(newUser);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public void registerUser(UserRegisterRequestDto user) {
+		User newUser = this.userMapper.UserRegisterToEntity(user);
+		this.userRepository.save(newUser);
+
 	}
 
-	public void loginUser(UserLogin user) {
+	public void loginUser(UserLoginRequestDto user) {
 		try {
 			System.out.println(user);
 		} catch (Exception e) {
@@ -42,7 +39,7 @@ public class UserService {
 		}
 	}
 
-	public GetUser getUser(String email) {
+	public GetUserResponseDto getUser(String email) {
 		Optional<User> user = this.userRepository.findByEmail(email);
 		if (user.isPresent()) {
 			String updatedDate = formatDate(user.get().getUpdatedAt());

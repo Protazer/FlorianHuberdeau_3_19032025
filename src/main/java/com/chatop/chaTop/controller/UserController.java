@@ -1,8 +1,8 @@
 package com.chatop.chaTop.controller;
 
-import com.chatop.chaTop.payload.request.UserLogin;
-import com.chatop.chaTop.payload.request.UserRegister;
-import com.chatop.chaTop.payload.response.GetUser;
+import com.chatop.chaTop.payload.request.UserLoginRequestDto;
+import com.chatop.chaTop.payload.request.UserRegisterRequestDto;
+import com.chatop.chaTop.payload.response.GetUserResponseDto;
 import com.chatop.chaTop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,10 @@ public class UserController {
 
 
 	@RequestMapping("/me")
-	public ResponseEntity<GetUser> getUser() {
+	public ResponseEntity<GetUserResponseDto> getUser() {
 		String email = "flo@gmail.com";
 		try {
-			GetUser user = userService.getUser(email);
+			GetUserResponseDto user = userService.getUser(email);
 			return ResponseEntity.ok().body(user);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -33,7 +33,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/login")
-	public ResponseEntity<?> loginUser(@Valid @RequestBody UserLogin user) {
+	public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequestDto user) {
 		try {
 			userService.loginUser(user);
 			return ResponseEntity.ok().build();
@@ -43,7 +43,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/register")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegister user) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequestDto user) {
 		try {
 			userService.registerUser(user);
 			return ResponseEntity.ok().build();

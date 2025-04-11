@@ -1,7 +1,7 @@
 package com.chatop.chaTop.controller;
 
-import com.chatop.chaTop.payload.request.PostMessage;
-import com.chatop.chaTop.payload.response.PostMessageResponse;
+import com.chatop.chaTop.payload.request.PostMessageRequestDto;
+import com.chatop.chaTop.payload.response.PostMessageResponseDto;
 import com.chatop.chaTop.service.MessageService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,8 @@ public class MessageController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PostMessageResponse> postMessage(@Valid @RequestBody PostMessage request) {
-		PostMessageResponse PostMessageResponse = messageService.postMessage(request);
-		return new ResponseEntity<PostMessageResponse>(PostMessageResponse, HttpStatus.OK);
-
+	public ResponseEntity<PostMessageResponseDto> postMessage(@Valid @RequestBody PostMessageRequestDto request) {
+		PostMessageResponseDto PostMessageResponse = messageService.postMessage(request);
+		return new ResponseEntity<PostMessageResponseDto>(PostMessageResponse, HttpStatus.OK);
 	}
 }
