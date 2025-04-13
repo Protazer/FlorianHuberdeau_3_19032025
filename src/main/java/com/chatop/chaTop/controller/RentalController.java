@@ -8,6 +8,7 @@ import com.chatop.chaTop.service.RentalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,14 +36,14 @@ public class RentalController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CreateRentalResponseDto> addRental(@RequestPart(value = "picture") MultipartFile picture, @Valid @ModelAttribute PostRentalRequestDto request) {
-		CreateRentalResponseDto createRentalResponse = rentalService.addRental(picture, request);
-		return ResponseEntity.ok().body(createRentalResponse);
+	public ResponseEntity<CreateRentalResponseDto> addRental(@RequestPart(value = "picture") MultipartFile picture, @Valid @ModelAttribute PostRentalRequestDto request, JwtAuthenticationToken token) {
+		CreateRentalResponseDto rentalResponse = rentalService.addRental(picture, request, token);
+		return new ResponseEntity<>(rentalResponse, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CreateRentalResponseDto> updateRental(@PathVariable int id, @Valid @ModelAttribute PostRentalRequestDto request) {
-		CreateRentalResponseDto createRentalResponse = rentalService.updateRental(id, request);
-		return ResponseEntity.ok().body(createRentalResponse);
+	public ResponseEntity<CreateRentalResponseDto> updateRental(@PathVariable int id, @Valid @ModelAttribute PostRentalRequestDto request, JwtAuthenticationToken token) {
+		CreateRentalResponseDto rentalResponse = rentalService.updateRental(id, request, token);
+		return new ResponseEntity<>(rentalResponse, HttpStatus.OK);
 	}
 }

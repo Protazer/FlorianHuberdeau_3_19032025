@@ -23,7 +23,8 @@ public class MessageController {
 
 	@PostMapping
 	public ResponseEntity<PostMessageResponseDto> postMessage(@Valid @RequestBody PostMessageRequestDto request) {
-		PostMessageResponseDto PostMessageResponse = messageService.postMessage(request);
-		return new ResponseEntity<PostMessageResponseDto>(PostMessageResponse, HttpStatus.OK);
+		PostMessageResponseDto postMessageResponse = messageService.postMessage(request);
+		return new ResponseEntity<PostMessageResponseDto>(postMessageResponse, HttpStatus.OK);
 	}
 }
+
