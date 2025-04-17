@@ -8,6 +8,7 @@ import com.chatop.chaTop.payload.request.UserRegisterRequestDto;
 import com.chatop.chaTop.payload.response.AuthUserResponseDto;
 import com.chatop.chaTop.payload.response.GetUserResponseDto;
 import com.chatop.chaTop.repository.UserRepository;
+import com.chatop.chaTop.utils.Helpers;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,8 +16,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.chatop.chaTop.utils.Helpers.formatDate;
 
 @Data
 @Service
@@ -26,12 +25,14 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final JWTService jwtService;
+	private final Helpers helpers;
 
-	public UserService(final UserRepository userRepository, final UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder, JWTService jwtService) {
+	public UserService(final UserRepository userRepository, final UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder, JWTService jwtService, Helpers helpers) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.jwtService = jwtService;
+		this.helpers = helpers;
 	}
 
 	public AuthUserResponseDto registerUser(UserRegisterRequestDto user) {
@@ -46,7 +47,7 @@ public class UserService {
 	}
 
 	public AuthUserResponseDto loginUser(UserLoginRequestDto user) {
-		Optional<User> findUser = userRepository.findByEmail(user.login());
+		Optional<User> findUser = userRepository.findByEmail(user.email());
 		if (findUser.isEmpty()) {
 			throw new ApiException("Email not found", HttpStatus.UNAUTHORIZED);
 		}
@@ -63,8 +64,8 @@ public class UserService {
 		int userId = Integer.parseInt(token.getToken().getSubject());
 		Optional<User> user = this.userRepository.findById(userId);
 		if (user.isPresent()) {
-			String updatedDate = formatDate(user.get().getUpdatedAt());
-			String createdAt = formatDate(user.get().getCreatedAt());
+			String updatedDate = helpers.formatDate(user.get().getUpdatedAt());
+			String createdAt = helpers.formatDate(user.get().getCreatedAt());
 			return this.userMapper.toDto(user.get(), createdAt, updatedDate);
 		} else {
 			throw new ApiException("User not found", HttpStatus.NOT_FOUND);
@@ -75,8 +76,8 @@ public class UserService {
 	public GetUserResponseDto getUserById(final int id) {
 		Optional<User> user = this.userRepository.findById(id);
 		if (user.isPresent()) {
-			String updatedDate = formatDate(user.get().getUpdatedAt());
-			String createdAt = formatDate(user.get().getCreatedAt());
+			String updatedDate = helpers.formatDate(user.get().getUpdatedAt());
+			String createdAt = helpers.formatDate(user.get().getCreatedAt());
 			return this.userMapper.toDto(user.get(), createdAt, updatedDate);
 		} else {
 			throw new ApiException("User not found", HttpStatus.NOT_FOUND);

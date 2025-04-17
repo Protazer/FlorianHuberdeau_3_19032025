@@ -1,4 +1,4 @@
 package com.chatop.chaTop.payload.response;
 
-public record AuthUserResponseDto(String jwt) {
+public record AuthUserResponseDto(String token) {
 }
