@@ -13,6 +13,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,9 +67,9 @@ public class RentalService {
 		return rentalMapper.toDtoRentalList(formattedRentals);
 	}
 
-	public CreateRentalResponseDto addRental(MultipartFile picture, PostRentalRequestDto request) {
+	public CreateRentalResponseDto addRental(MultipartFile picture, PostRentalRequestDto request, JwtAuthenticationToken token) {
 		try {
-			int ownerId = 3;
+			int userId = Integer.parseInt(token.getToken().getSubject());
 
 			String pictureUrl = this.cloudinary.uploader().upload(picture.getBytes(), ObjectUtils.asMap(
 					"use_filename", true,
@@ -76,7 +77,7 @@ public class RentalService {
 					"overwrite", true
 			)).get("url").toString();
 
-			Rental newRental = rentalMapper.toCreateEntity(request, pictureUrl, ownerId);
+			Rental newRental = rentalMapper.toCreateEntity(request, pictureUrl, userId);
 			rentalRepository.save(newRental);
 			return new CreateRentalResponseDto("Rental created !");
 
@@ -86,15 +87,15 @@ public class RentalService {
 
 	}
 
-	public CreateRentalResponseDto updateRental(int id, PostRentalRequestDto request) {
-		int ownerId = 3;
+	public CreateRentalResponseDto updateRental(int id, PostRentalRequestDto request, JwtAuthenticationToken token) {
+		int userId = Integer.parseInt(token.getToken().getSubject());
 		Optional<Rental> oldRental = rentalRepository.findById(id);
 
 		if (oldRental.isPresent()) {
 			Rental oldRentalValues = oldRental.get();
 			Date updatedDate = new Date();
 
-			Rental updatedRental = rentalMapper.toUpdateEntity(request, oldRentalValues.getId(), oldRentalValues.getPicture(), ownerId, oldRentalValues.getCreatedAt(), updatedDate);
+			Rental updatedRental = rentalMapper.toUpdateEntity(request, oldRentalValues.getId(), oldRentalValues.getPicture(), userId, oldRentalValues.getCreatedAt(), updatedDate);
 			rentalRepository.save(updatedRental);
 			return new CreateRentalResponseDto("Rental updated !");
 		} else {
