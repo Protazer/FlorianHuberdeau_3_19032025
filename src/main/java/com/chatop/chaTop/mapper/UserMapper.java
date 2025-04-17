@@ -8,21 +8,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserMapper(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+	public UserMapper(BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
-    public GetUserResponseDto toDto(User user, String createdAt, String updatedDate) {
-        return new GetUserResponseDto(user.getId(), user.getEmail(), user.getName(), createdAt, updatedDate);
-    }
+	public GetUserResponseDto toDto(User user, String createdAt, String updatedDate) {
+		return new GetUserResponseDto(user.getId(), user.getName(), user.getEmail(), createdAt, updatedDate);
+	}
 
-    public User UserRegisterToEntity(UserRegisterRequestDto user) {
-        User newUser = new User();
-        newUser.setName(user.name());
-        newUser.setEmail(user.email());
-        newUser.setPassword(bCryptPasswordEncoder.encode(user.password()));
-        return newUser;
-    }
+	public User UserRegisterToEntity(UserRegisterRequestDto user) {
+		User newUser = new User();
+		newUser.setName(user.name());
+		newUser.setEmail(user.email());
+		newUser.setPassword(bCryptPasswordEncoder.encode(user.password()));
+		return newUser;
+	}
 }

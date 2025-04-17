@@ -9,6 +9,7 @@ import com.chatop.chaTop.payload.response.CreateRentalResponseDto;
 import com.chatop.chaTop.payload.response.GetAllRentalsResponseDto;
 import com.chatop.chaTop.payload.response.GetRentalResponseDto;
 import com.chatop.chaTop.repository.RentalRepository;
+import com.chatop.chaTop.utils.Helpers;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.Data;
@@ -22,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.chatop.chaTop.utils.Helpers.formatDate;
-
 
 @Data
 @Service
@@ -33,18 +32,20 @@ public class RentalService {
 	private RentalMapper rentalMapper;
 	private Cloudinary cloudinary;
 	private GlobalExceptionHandler globalHandler;
+	private Helpers helpers;
 
-	public RentalService(final RentalRepository rentalRepository, final RentalMapper rentalMapper, Cloudinary cloudinary) {
+	public RentalService(final RentalRepository rentalRepository, final RentalMapper rentalMapper, Cloudinary cloudinary, Helpers helpers) {
 		this.rentalRepository = rentalRepository;
 		this.rentalMapper = rentalMapper;
 		this.cloudinary = cloudinary;
+		this.helpers = helpers;
 	}
 
 	public GetRentalResponseDto getRentalById(final int id) {
 		Optional<Rental> rental = rentalRepository.findById(id);
 		if (rental.isPresent()) {
-			String updatedDate = formatDate(rental.get().getUpdatedAt());
-			String createdAt = formatDate(rental.get().getCreatedAt());
+			String updatedDate = helpers.formatDate(rental.get().getUpdatedAt());
+			String createdAt = helpers.formatDate(rental.get().getCreatedAt());
 
 			return rentalMapper.toDtoRental(rental.get(), createdAt, updatedDate);
 		} else {
@@ -58,8 +59,8 @@ public class RentalService {
 		List<GetRentalResponseDto> formattedRentals = new ArrayList<>();
 
 		rentals.iterator().forEachRemaining((Rental rental) -> {
-			String updatedDate = formatDate(rental.getUpdatedAt());
-			String createdAt = formatDate(rental.getCreatedAt());
+			String updatedDate = helpers.formatDate(rental.getUpdatedAt());
+			String createdAt = helpers.formatDate(rental.getCreatedAt());
 			GetRentalResponseDto formattedRental = rentalMapper.toDtoRental(rental, createdAt, updatedDate);
 			formattedRentals.add(formattedRental);
 		});
