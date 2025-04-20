@@ -23,7 +23,7 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 public class SpringSecurityConfig {
 
-	private final String[] WHITE_LIST_ROUTES = {"/api/auth/login", "/api/auth/register"};
+	private final String[] WHITE_LIST_ROUTES = {"/api/auth/login", "/api/auth/register", "/swagger-ui/**", "/v3/api-docs"};
 
 	@Value("${jwt.public.key}")
 	private RSAPublicKey publicKey;
