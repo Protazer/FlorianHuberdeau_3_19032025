@@ -20,6 +20,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+/**
+ * This class is a configuration class that sets up the security configuration
+ * for  application.
+ * It enables web security and defines the necessary security filters and rules.
+ */
 @Configuration
 public class SpringSecurityConfig {
 
@@ -31,6 +36,15 @@ public class SpringSecurityConfig {
 	@Value("${jwt.private.key}")
 	private RSAPrivateKey privateKey;
 
+	/**
+	 * This method configure the security filter chain by disabling CSRF protection, setting
+	 * the session creation policy to stateless,
+	 * and defining authorization rules for specific routes.
+	 *
+	 * @param httpSecurity the HttpSecurity object to configure the security filter chain
+	 * @return the configured SecurityFilterChain
+	 * @throws Exception if an error occurs during configuration
+	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf(csrf -> csrf.disable())
@@ -40,11 +54,21 @@ public class SpringSecurityConfig {
 				.httpBasic(Customizer.withDefaults()).build();
 	}
 
+	/**
+	 * Creates a BCryptPasswordEncoder bean.
+	 *
+	 * @return the BCryptPasswordEncoder bean
+	 */
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	/**
+	 * Create a JwtEncoder
+	 *
+	 * @return the JwtEncoder bean
+	 */
 	@Bean
 	JwtEncoder jwtEncoder() {
 		RSAKey jwk = new RSAKey.Builder(this.publicKey).privateKey(this.privateKey).build();
@@ -52,6 +76,11 @@ public class SpringSecurityConfig {
 		return new NimbusJwtEncoder(jwks);
 	}
 
+	/**
+	 * Create a JwtDecoder
+	 *
+	 * @return the JwtDecoder bean
+	 */
 	@Bean
 	JwtDecoder jwtDecoder() {
 		return NimbusJwtDecoder.withPublicKey(this.publicKey).build();

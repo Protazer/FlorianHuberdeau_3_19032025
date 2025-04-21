@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service class for managing users.
+ */
 @Data
 @Service
 public class UserService {
@@ -27,7 +30,7 @@ public class UserService {
 	private final JWTService jwtService;
 	private final Helpers helpers;
 
-	public UserService(final UserRepository userRepository, final UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder, JWTService jwtService, Helpers helpers) {
+	public UserService(final UserRepository userRepository, final UserMapper userMapper, final BCryptPasswordEncoder bCryptPasswordEncoder, final JWTService jwtService, final Helpers helpers) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -35,7 +38,13 @@ public class UserService {
 		this.helpers = helpers;
 	}
 
-	public AuthUserResponseDto registerUser(UserRegisterRequestDto user) {
+	/**
+	 * Register a user using information from the registration request.
+	 *
+	 * @param user The registration request containing user details.
+	 * @return AuthUserResponseDto with generated token.
+	 */
+	public AuthUserResponseDto registerUser(final UserRegisterRequestDto user) {
 		Optional<User> userExist = userRepository.findByEmail(user.email());
 		if (userExist.isPresent()) {
 			throw new ApiException("User Already exist", HttpStatus.BAD_REQUEST);
@@ -46,7 +55,13 @@ public class UserService {
 		return new AuthUserResponseDto(token);
 	}
 
-	public AuthUserResponseDto loginUser(UserLoginRequestDto user) {
+	/**
+	 * login a user using information from the registration request.
+	 *
+	 * @param user The registration request containing user details.
+	 * @return AuthUserResponseDto with generated token.
+	 */
+	public AuthUserResponseDto loginUser(final UserLoginRequestDto user) {
 		Optional<User> findUser = userRepository.findByEmail(user.email());
 		if (findUser.isEmpty()) {
 			throw new ApiException("Email not found", HttpStatus.UNAUTHORIZED);
@@ -60,7 +75,13 @@ public class UserService {
 		return new AuthUserResponseDto(token);
 	}
 
-	public GetUserResponseDto getUser(JwtAuthenticationToken token) {
+	/**
+	 * Retrieve a user by token.
+	 *
+	 * @param token The JwtAuthenticationToken.
+	 * @return GetUserResponseDto The found User.
+	 */
+	public GetUserResponseDto getUser(final JwtAuthenticationToken token) {
 		int userId = Integer.parseInt(token.getToken().getSubject());
 		Optional<User> user = this.userRepository.findById(userId);
 		if (user.isPresent()) {
@@ -73,6 +94,12 @@ public class UserService {
 
 	}
 
+	/**
+	 * Retrieve a user by his id.
+	 *
+	 * @param id The identifier of the user.
+	 * @return GetUserResponseDto The found User.
+	 */
 	public GetUserResponseDto getUserById(final int id) {
 		Optional<User> user = this.userRepository.findById(id);
 		if (user.isPresent()) {

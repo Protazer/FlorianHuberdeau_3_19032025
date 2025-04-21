@@ -7,25 +7,45 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
+
+/**
+ * Entity representing a User.
+ */
 @Data
 @Entity
 @Table(name = "users")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    /**
+     * Unique identifier for the user.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	private String email;
+    /**
+     * Email of the user.
+     */
+    private String email;
 
-	private String name;
+    /**
+     * Name of the user.
+     */
+    private String name;
 
-	private String password;
-
-	@CreationTimestamp
-	@Column(name = "created_at")
-	private Date createdAt;
-
-	@UpdateTimestamp
-	@Column(name = "updated_at")
-	private Date updatedAt;
+    /**
+     * Password of the user.
+     */
+    private String password;
+    /**
+     * User updated Timestamp.
+     */
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+    /**
+     * User updated Timestamp.
+     */
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }
