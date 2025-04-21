@@ -8,21 +8,30 @@ import com.chatop.chaTop.repository.MessageRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing messages.
+ */
 @Data
 @Service
 public class MessageService {
 
-	private final MessageRepository messageRepository;
-	private final MessageMapper messageMapper;
+    private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
-	public MessageService(final MessageRepository messageRepository, final MessageMapper messageMapper) {
-		this.messageRepository = messageRepository;
-		this.messageMapper = messageMapper;
-	}
+    public MessageService(final MessageRepository messageRepository, final MessageMapper messageMapper) {
+        this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
+    }
 
-	public PostMessageResponseDto postMessage(PostMessageRequestDto message) {
-		Message newMessage = messageMapper.toEntity(message);
-		messageRepository.save(newMessage);
-		return new PostMessageResponseDto("Message send with success");
-	}
+    /**
+     * Create a message.
+     *
+     * @param message The message to be created.
+     * @return PostMessageResponseDto request status message.
+     */
+    public PostMessageResponseDto postMessage(final PostMessageRequestDto message) {
+        Message newMessage = messageMapper.toEntity(message);
+        messageRepository.save(newMessage);
+        return new PostMessageResponseDto("Message send with success");
+    }
 }

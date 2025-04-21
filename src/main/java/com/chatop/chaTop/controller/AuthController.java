@@ -18,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for handling authentication-related operations.
+ */
 @RestController
 @RequestMapping("api/auth")
 public class AuthController {
@@ -30,6 +33,12 @@ public class AuthController {
     }
 
 
+    /**
+     * Get user by token.
+     *
+     * @param token The JWTAuthenticationToken.
+     * @return ResponseEntity<GetUserResponseDto> A JWT if registration is successful.
+     */
     @GetMapping("/me")
     @Operation(summary = "Get User by token", description = "Return a user as per the token")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -38,12 +47,17 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema()))
     })
-    public ResponseEntity<GetUserResponseDto> getUser(JwtAuthenticationToken token) {
+    public ResponseEntity<GetUserResponseDto> getUser(final JwtAuthenticationToken token) {
         GetUserResponseDto user = userService.getUser(token);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-
+    /**
+     * Login an existing user.
+     *
+     * @param user The login request containing user credentials.
+     * @return ResponseEntity<AuthUserResponseDto> A JWT if login is successful.
+     */
     @PostMapping("/login")
     @Operation(summary = "Login User", description = "Return a token generated from login authentication")
     @ApiResponses(value = {
@@ -53,12 +67,18 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Email not found", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema()))
     })
-    public ResponseEntity<AuthUserResponseDto> loginUser(@Valid @RequestBody UserLoginRequestDto user) {
+    public ResponseEntity<AuthUserResponseDto> loginUser(@Valid @RequestBody final UserLoginRequestDto user) {
         AuthUserResponseDto authUserResponse = userService.loginUser(user);
         return new ResponseEntity<>(authUserResponse, HttpStatus.OK);
 
     }
 
+    /**
+     * Registers a new user.
+     *
+     * @param user The registration request containing user details.
+     * @return ResponseEntity<AuthUserResponseDto> A JWT if registration is successful.
+     */
     @PostMapping("/register")
     @Operation(summary = "Register User", description = "Return a token generated from register user information's")
     @ApiResponses(value = {
@@ -66,7 +86,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "User Already exist", content = @Content(schema = @Schema()))
     })
-    public ResponseEntity<AuthUserResponseDto> registerUser(@Valid @RequestBody UserRegisterRequestDto user) {
+    public ResponseEntity<AuthUserResponseDto> registerUser(@Valid @RequestBody final UserRegisterRequestDto user) {
         AuthUserResponseDto authUserResponseDto = userService.registerUser(user);
         return new ResponseEntity<>(authUserResponseDto, HttpStatus.OK);
     }

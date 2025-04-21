@@ -21,6 +21,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Controller for handling rental-related operations.
+ */
 @RestController
 @RequestMapping("api/rentals")
 public class RentalController {
@@ -31,6 +34,11 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
+    /**
+     * Retrieves all rentals.
+     *
+     * @return ResponseEntity<GetAllRentalsResponseDto> with an array of all stored rentals.
+     */
     @GetMapping("")
     @Operation(summary = "Get all rentals", description = "Return a complete rentals list")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -56,6 +64,12 @@ public class RentalController {
 
     }
 
+    /**
+     * Retrieves information about a specific rental.
+     *
+     * @param id The ID of the rental to retrieve.
+     * @return ResponseEntity<GetRentalResponseDto> with one specific rental content.
+     */
     @GetMapping("/{id}")
     @Operation(summary = "Get a specific rental by id", description = "Return a rentals per as id")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -77,6 +91,14 @@ public class RentalController {
         return new ResponseEntity<>(rental, HttpStatus.OK);
     }
 
+    /**
+     * Add a new rental store picture on cloudinary server and store details and picture url into database.
+     *
+     * @param picture The multipart file.
+     * @param request The request containing new rental details.
+     * @param token   The JWTAuthenticationToken token.
+     * @return ResponseEntity<CreateRentalResponseDto> containing the success message
+     */
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Create a new rental")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -85,11 +107,19 @@ public class RentalController {
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "Failed to create rental.", content = @Content(schema = @Schema())),
     })
-    public ResponseEntity<CreateRentalResponseDto> addRental(@Parameter(description = "File to upload") @RequestPart(value = "picture") MultipartFile picture, @Valid @ModelAttribute PostRentalRequestDto request, JwtAuthenticationToken token) {
+    public ResponseEntity<CreateRentalResponseDto> addRental(@Parameter(description = "File to upload") @RequestPart(value = "picture") final MultipartFile picture, @Valid @ModelAttribute final PostRentalRequestDto request, final JwtAuthenticationToken token) {
         CreateRentalResponseDto rentalResponse = rentalService.addRental(picture, request, token);
         return new ResponseEntity<>(rentalResponse, HttpStatus.OK);
     }
 
+    /**
+     * Updates information about a specific rental.
+     *
+     * @param id      The ID of the rental to update.
+     * @param request The request containing specific rental to update details.
+     * @param token   The JWTAuthenticationToken token.
+     * @return ResponseEntity<CreateRentalResponseDto> containing the success message.
+     */
     @PutMapping(value = "/{id}")
     @Operation(summary = "Update existing rental by id")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -98,7 +128,7 @@ public class RentalController {
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "Failed to update rental.", content = @Content(schema = @Schema())),
     })
-    public ResponseEntity<CreateRentalResponseDto> updateRental(@PathVariable int id, @Valid @ModelAttribute PostRentalRequestDto request, JwtAuthenticationToken token) {
+    public ResponseEntity<CreateRentalResponseDto> updateRental(@PathVariable final int id, @Valid @ModelAttribute final PostRentalRequestDto request, final JwtAuthenticationToken token) {
         CreateRentalResponseDto rentalResponse = rentalService.updateRental(id, request, token);
         return new ResponseEntity<>(rentalResponse, HttpStatus.OK);
     }

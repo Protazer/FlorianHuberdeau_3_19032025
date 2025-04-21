@@ -23,7 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Service class for managing rentals.
+ */
 @Data
 @Service
 public class RentalService {
@@ -34,13 +36,19 @@ public class RentalService {
     private GlobalExceptionHandler globalHandler;
     private Helpers helpers;
 
-    public RentalService(final RentalRepository rentalRepository, final RentalMapper rentalMapper, Cloudinary cloudinary, Helpers helpers) {
+    public RentalService(final RentalRepository rentalRepository, final RentalMapper rentalMapper, final Cloudinary cloudinary, final Helpers helpers) {
         this.rentalRepository = rentalRepository;
         this.rentalMapper = rentalMapper;
         this.cloudinary = cloudinary;
         this.helpers = helpers;
     }
 
+    /**
+     * Retrieve a rental by its id.
+     *
+     * @param id The id of the rental.
+     * @return An GetRentalResponseDto with retrieved rental.
+     */
     public GetRentalResponseDto getRentalById(final int id) {
         Optional<Rental> rental = rentalRepository.findById(id);
         if (rental.isPresent()) {
@@ -53,6 +61,11 @@ public class RentalService {
         }
     }
 
+    /**
+     * Retrieve all rentals.
+     *
+     * @return An GetAllRentalsResponseDto with retrieved rentals list.
+     */
     public GetAllRentalsResponseDto getRentals() {
         Iterable<Rental> rentals = rentalRepository.findAll();
 
@@ -68,7 +81,15 @@ public class RentalService {
         return rentalMapper.toDtoRentalList(formattedRentals);
     }
 
-    public CreateRentalResponseDto addRental(MultipartFile picture, PostRentalRequestDto request, JwtAuthenticationToken token) {
+    /**
+     * create a rental.
+     *
+     * @param picture The multipart file.
+     * @param request The rental request containing details.
+     * @param token   The JwtAuthenticationToken.
+     * @return CreateRentalResponseDto request status message.
+     */
+    public CreateRentalResponseDto addRental(final MultipartFile picture, final PostRentalRequestDto request, final JwtAuthenticationToken token) {
         try {
             int userId = Integer.parseInt(token.getToken().getSubject());
 
@@ -88,7 +109,15 @@ public class RentalService {
 
     }
 
-    public CreateRentalResponseDto updateRental(int id, PostRentalRequestDto request, JwtAuthenticationToken token) {
+    /**
+     * create a rental.
+     *
+     * @param id      The id of the updated rental.
+     * @param request The rental request containing details.
+     * @param token   The JwtAuthentication.
+     * @return CreateRentalResponseDto request status message.
+     */
+    public CreateRentalResponseDto updateRental(final int id, final PostRentalRequestDto request, final JwtAuthenticationToken token) {
         int userId = Integer.parseInt(token.getToken().getSubject());
         Optional<Rental> oldRental = rentalRepository.findById(id);
 

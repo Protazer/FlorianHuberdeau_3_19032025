@@ -18,16 +18,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling message-related operations.
+ */
 @RestController
 @RequestMapping("api/messages")
 public class MessageController {
 
     private final MessageService messageService;
 
-    public MessageController(MessageService messageService) {
+    public MessageController(final MessageService messageService) {
         this.messageService = messageService;
     }
 
+    /**
+     * Posts a message.
+     *
+     * @param request The message request containing details.
+     * @return ResponseEntity<PostMessageResponseDto> with message about request.
+     */
     @PostMapping
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Post a rental Message")
@@ -35,7 +44,7 @@ public class MessageController {
             @ApiResponse(responseCode = "200", description = "Message send with success", content = @Content(schema = @Schema(implementation = PostMessageResponseDto.class), mediaType = "application/json", examples = @ExampleObject(value = "{\"message\":\"Message send with success\"}"))),
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
     })
-    public ResponseEntity<PostMessageResponseDto> postMessage(@Valid @RequestBody PostMessageRequestDto request) {
+    public ResponseEntity<PostMessageResponseDto> postMessage(@Valid @RequestBody final PostMessageRequestDto request) {
         PostMessageResponseDto postMessageResponse = messageService.postMessage(request);
         return new ResponseEntity<PostMessageResponseDto>(postMessageResponse, HttpStatus.OK);
     }
