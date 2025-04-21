@@ -7,6 +7,7 @@ import com.chatop.chaTop.payload.response.GetUserResponseDto;
 import com.chatop.chaTop.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,7 +34,7 @@ public class AuthController {
     @Operation(summary = "Get User by token", description = "Return a user as per the token")
     @SecurityRequirement(name = "Bearer Authentication")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull retrived user", content = @Content(schema = @Schema(implementation = GetUserResponseDto.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Successful retrieved user", content = @Content(schema = @Schema(implementation = GetUserResponseDto.class), examples = @ExampleObject(value = "{\"id\": \"8\",\"name\": \"Florian\",\"email\": \"florian.huberdeau1@laposte.net\",\"created_at\": \"2025/04/15\",\"updated_at\": \"2025/04/15\"}"), mediaType = "application/json")),
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema()))
     })
@@ -46,7 +47,7 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "Login User", description = "Return a token generated from login authentication")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull login user", content = @Content(schema = @Schema(implementation = AuthUserResponseDto.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Successful login user", content = @Content(schema = @Schema(implementation = AuthUserResponseDto.class), examples = @ExampleObject(value = "{\"token\": \"Generated token\"}"), mediaType = "application/json")),
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "Invalid Email/Password", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "Email not found", content = @Content(schema = @Schema())),
@@ -61,7 +62,7 @@ public class AuthController {
     @PostMapping("/register")
     @Operation(summary = "Register User", description = "Return a token generated from register user information's")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull register user", content = @Content(schema = @Schema(implementation = AuthUserResponseDto.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Successful register user", content = @Content(schema = @Schema(implementation = AuthUserResponseDto.class), examples = @ExampleObject(value = "{\"token\": \"Generated token\"}"), mediaType = "application/json")),
             @ApiResponse(responseCode = "401", description = "Unauthorized request", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "400", description = "User Already exist", content = @Content(schema = @Schema()))
     })
